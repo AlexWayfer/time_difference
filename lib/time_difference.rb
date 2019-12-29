@@ -1,5 +1,7 @@
 require 'rubygems'
-require "active_support/all"
+require 'date'
+require 'dry/inflector'
+require 'tardis'
 
 class TimeDifference
 
@@ -59,13 +61,14 @@ class TimeDifference
   end
 
   def humanize
+    inflector = Dry::Inflector.new
     diff_parts = []
     in_general.each do |part,quantity|
       next if quantity <= 0
-      part = part.to_s.humanize
+      part = inflector.humanize part.to_s
 
       if quantity <= 1
-        part = part.singularize
+        part = inflector.singularize part
       end
 
       diff_parts << "#{quantity} #{part}"
